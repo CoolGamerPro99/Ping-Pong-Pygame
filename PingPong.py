@@ -140,8 +140,7 @@ class GameManager:
 	def reset_everything(self):
 		self.player_score = 0
 		self.opponent_score = 0
-		Ball.reset_ball(self)
-		Ball.restart_counter(self)
+		ball.reset_ball()
 
 def draw_text(text, font, color, surface, x, y):
 	textobj = font.render(text, 1, color)
@@ -167,7 +166,6 @@ pygame.display.set_icon(iconImg)
 bg_color = pygame.Color('#2F373F')
 accent_color = (27,35,43)
 red = (255, 0, 0)
-small_font = pygame.font.Font('freesansbold.ttf', 12)
 basic_font = pygame.font.Font('freesansbold.ttf', 32)
 plob_sound = pygame.mixer.Sound("pong.ogg")
 score_sound = pygame.mixer.Sound("score.ogg")
@@ -175,9 +173,10 @@ middle_strip = pygame.Rect(screen_width/2 - 2,0,4,screen_height)
 
 # Buttons rectangles
 start_button = pygame.Rect(screen_width/2 - 110, screen_height/2 - 160, 200, 60)
-exit_button = pygame.Rect(screen_width/2 - 110, screen_height/2, 200, 60)
+options_button = pygame.Rect(screen_width/2 - 110, screen_height/2, 200, 60)
 resume_button = pygame.Rect(screen_width/2 - 110, screen_height/2 - 160, 200, 60)
 main_menu_button = pygame.Rect(screen_width/2 - 140, screen_height/2, 250, 60)
+exit_button = pygame.Rect(screen_width/2 - 110, screen_height/2 + 150, 200, 60)
 
 # Game objects
 player = Player('Paddle.png',screen_width - 20,screen_height/2,5)
@@ -212,14 +211,18 @@ def main_menu():
 					if pygame.Rect.collidepoint(exit_button, pygame.mouse.get_pos()):
 						pygame.quit()
 						sys.exit()
+					if pygame.Rect.collidepoint(options_button, pygame.mouse.get_pos()):
+						options_menu()
 			
 		# Draw stuff
 		draw_text("Main Menu", basic_font, red, screen, screen_width/2 - 100, screen_height/2 - 300)
 		pygame.draw.rect(screen,red,start_button)
 		pygame.draw.rect(screen, red, exit_button)
+		pygame.draw.rect(screen, red, options_button)
 		draw_text("Start",basic_font,accent_color,start_button,screen_width/2 - 50,screen_height/2 - 145)
-		draw_text("Exit",basic_font,accent_color,exit_button,screen_width/2 - 50,screen_height/2 + 10)
-
+		draw_text("Exit",basic_font,accent_color,exit_button,screen_width/2 - 50,screen_height/2 + 165)
+		draw_text("Options",basic_font,accent_color,options_button,screen_width/2 - 70,screen_height/2 + 10)
+		
 		# Rendering
 		pygame.display.flip()
 		clock.tick(FPS)
@@ -248,6 +251,31 @@ def pause_menu():
 		pygame.draw.rect(screen,red,resume_button)
 		pygame.draw.rect(screen,red,main_menu_button)
 		draw_text("Resume",basic_font,accent_color,resume_button,screen_width/2 - 70,screen_height/2 - 145)
+		draw_text("Back to Menu",basic_font,accent_color,main_menu_button,screen_width/2 - 120,screen_height/2 + 10)
+
+		# Rendering
+		pygame.display.flip()
+		clock.tick(FPS)
+
+def options_menu():
+	click = False
+	while True:
+		# Background
+		screen.fill(bg_color)
+
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				sys.exit()
+			if event.type == pygame.MOUSEBUTTONDOWN:
+				click = True
+				if click == True:
+					if pygame.Rect.collidepoint(main_menu_button, pygame.mouse.get_pos()):
+						main_menu()
+
+		# Draw stuff
+		draw_text("Options", basic_font, red, screen, screen_width/2 - 70, screen_height/2 - 280)
+		pygame.draw.rect(screen,red,main_menu_button)
 		draw_text("Back to Menu",basic_font,accent_color,main_menu_button,screen_width/2 - 120,screen_height/2 + 10)
 
 		# Rendering
