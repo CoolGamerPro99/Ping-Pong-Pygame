@@ -179,7 +179,7 @@ screen_width = root.winfo_screenwidth()
 screen_height = root.winfo_screenheight()
 
 # Main Window
-iconImg = pygame.image.load(os.path.join(image_path, 'pongicon.png'))
+iconImg = pygame.image.load(os.path.join(image_path, 'icon.ico'))
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
 pygame.display.set_caption('Pong')
 pygame.display.set_icon(iconImg)
