@@ -1,5 +1,4 @@
 import pygame, sys, random, os
-import tkinter as tk
 from pygame.locals import *
 
 class Block(pygame.sprite.Sprite):
@@ -173,14 +172,9 @@ FPS = 120
 pygame.mixer_music.load(os.path.join(sound_path, 'game_music.mp3'))
 pygame.mixer_music.play(-1)
 
-# To get the screen width & height
-root = tk.Tk()
-screen_width = root.winfo_screenwidth()
-screen_height = root.winfo_screenheight()
-
 # Main Window
 iconImg = pygame.image.load(os.path.join(image_path, 'icon.ico'))
-screen = pygame.display.set_mode((screen_width, screen_height), pygame.FULLSCREEN)
+screen = pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 pygame.display.set_caption('Pong')
 pygame.display.set_icon(iconImg)
 
