@@ -443,4 +443,5 @@ def main_game():
 		pygame.display.flip()
 		clock.tick(FPS)
 
-main_menu()
+if __name__ == "__main__":		
+	main_menu()
