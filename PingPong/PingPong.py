@@ -2,19 +2,7 @@ import pygame
 import sys
 import random
 import os
-import json
 from pygame.locals import *
-
-# Data
-data = {
-    'player_score': 0,
-    'opponent_score': 0
-}
-try:
-    with open('save_file.txt') as save_file:
-        data = json.load(save_file)
-except:
-    print("No save file found")
 
 class Block(pygame.sprite.Sprite):
     def __init__(self, path, x_pos, y_pos):
@@ -128,8 +116,8 @@ class Opponent(Block):
 
 class GameManager:
     def __init__(self, ball_group, paddle_group):
-        self.player_score = data["player_score"]
-        self.opponent_score = data["opponent_score"]
+        self.player_score = 0
+        self.opponent_score = 0
         self.ball_group = ball_group
         self.paddle_group = paddle_group
 
@@ -146,17 +134,17 @@ class GameManager:
 
     def reset_ball(self):
         if self.ball_group.sprite.rect.right >= screen.get_width():
-            data["opponent_score"] += 1
+            self.opponent_score += 1
             self.ball_group.sprite.reset_ball()
         if self.ball_group.sprite.rect.left <= 0:
-            data["player_score"] += 1
+            self.player_score += 1
             self.ball_group.sprite.reset_ball()
 
     def draw_score(self):
         player_score = basic_font.render(
-            str(data["player_score"]), True, accent_color)
+            str(self.player_score), True, accent_color)
         opponent_score = basic_font.render(
-            str(data["opponent_score"]), True, accent_color)
+            str(self.opponent_score), True, accent_color)
 
         player_score_rect = player_score.get_rect(
             midleft=(screen.get_width() / 2 + 40, screen.get_height()/2))
@@ -167,8 +155,8 @@ class GameManager:
         screen.blit(opponent_score, opponent_score_rect)
 
     def reset_everything(self):
-        data["player_score"] = 0
-        data["opponent_score"] = 0
+        self.player_score = 0
+        self.player_score = 0
         ball.reset_ball()
 
 class Button:
@@ -286,8 +274,6 @@ def main_menu():
         # Logic
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('save_file.txt', 'w') as save_file:
-                    json.dump(data,save_file)
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -297,8 +283,6 @@ def main_menu():
                         fade()
                         gamemode_menu()
                     if exit_button.check_click() == True:
-                        with open('save_file.txt', 'w') as save_file:
-                            json.dump(data,save_file)
                         pygame.quit()
                         sys.exit()
                     if options_button.check_click() == True:
@@ -332,8 +316,6 @@ def gamemode_menu():
         # Logic
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('save_file.txt', 'w') as save_file:
-                    json.dump(data,save_file)
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -370,8 +352,6 @@ def pause_menu():
         # Logic
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('save_file.txt', 'w') as save_file:
-                    json.dump(data,save_file)
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -412,8 +392,6 @@ def settings_menu():
         # Logic
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('save_file.txt', 'w') as save_file:
-                    json.dump(data,save_file)
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -426,10 +404,6 @@ def settings_menu():
                         pygame.mixer_music.stop()
                     if start_music_button.check_click() == True:
                         pygame.mixer_music.play(-1)
-                    if reset_button.check_click() == True:
-                        fade()
-                        game_manager.reset_everything()
-                        vsAI_game()
             if event.type == pygame.MOUSEBUTTONUP:
                 click = False
 
@@ -438,7 +412,6 @@ def settings_menu():
         main_menu_button.draw()
         stop_music_button.draw()
         start_music_button.draw()
-        reset_button.draw()
 
         # Rendering
         pygame.display.flip()
@@ -456,8 +429,6 @@ def pause_settings_menu():
         # Logic
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('save_file.txt', 'w') as save_file:
-                    json.dump(data,save_file)
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -499,8 +470,6 @@ def vsAI_game():
         # Logic
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                with open('save_file.txt', 'w') as save_file:
-                    json.dump(data,save_file)
                 pygame.quit()
                 sys.exit()
             if event.type == pygame.KEYDOWN:
